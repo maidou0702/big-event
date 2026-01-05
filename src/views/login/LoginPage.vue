@@ -2,7 +2,7 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
  import{userRegisterService,userLoginService} from '@/utils/user'
-import{useUserStore} from '@/stores' 
+import{useUserStore} from '@/stores'
 import{useRouter} from 'vue-router'
 const isRegister = ref(false)
 const form=ref()
@@ -11,6 +11,7 @@ const formModel=ref({
     password:'',
     repassword:''
 })
+console.log(123)
 const rules={
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -31,7 +32,7 @@ const rules={
       message: '密码必须是6-15的非空字符',
       trigger: 'blur'
     },
-    { 
+    {
       validator: (rule, value, callback) => {
         if (value !== formModel.value.password) {
           callback(new Error('两次输入密码不一致!'))
@@ -44,7 +45,7 @@ const rules={
   ]
 }
 const register= async ()=>{
- 
+
    await form.value.validate()
 
     await userRegisterService(formModel.value)
@@ -56,7 +57,7 @@ const register= async ()=>{
 const userStore=useUserStore()
 const router=useRouter()
 const login= async ()=>{
-  
+
  await form.value.validate()
 const res = await userLoginService(formModel.value.username,formModel.value.password)
 userStore.setToken(res.data.token)
@@ -70,15 +71,15 @@ userStore.setToken(res.data.token)
     <el-col :span="6" :offset="3" class="form">
         <!-- 注册 -->
       <el-form ref="form" size="large"  v-if="isRegister" v-model="formModel" :rules="rules">
-      
+
         <el-form-item>
           <h1>注册</h1>
         </el-form-item>
         <el-form-item  prop="username">
           <el-input :prefix-icon="User" placeholder="请输入用户名" V-model="formModel.username"></el-input>
-          
+
         </el-form-item>
-        
+
         <el-form-item  prop="password">
           <el-input
             :prefix-icon="Lock"
@@ -92,7 +93,7 @@ userStore.setToken(res.data.token)
             :prefix-icon="Lock"
             type="password"
             placeholder="请输入再次密码"
-             V-model="formModel.reusername" 
+             V-model="formModel.reusername"
           ></el-input>
         </el-form-item>
         <el-form-item>
